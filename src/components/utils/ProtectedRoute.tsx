@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { selectUser } from "../../reducers/user-slice";
+import { selectUser } from "../../reducers/current-user-slice";
 import { useAppSelector } from "../../store/hooks";
 
 export const Protected = ({ element }: { element: JSX.Element }) => {

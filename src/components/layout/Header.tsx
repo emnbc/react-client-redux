@@ -2,7 +2,7 @@ import { Button, Modal } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { style } from "typestyle";
 import { useState } from "react";
-import { reset, selectUser } from "../../reducers/user-slice";
+import { reset, selectUser } from "../../reducers/current-user-slice";
 import { LocalStore } from "../../utils/local-store";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 

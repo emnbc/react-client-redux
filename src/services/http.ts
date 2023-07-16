@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { UserItem } from "../models/users";
 import { ICurrentUser, ILoginPayload } from "../models/auth";
-import { reset } from "../reducers/user-slice";
+import { reset } from "../reducers/current-user-slice";
 import { useAppDispatch } from "../store/hooks";
 
 const authorizedClient = axios.create();

@@ -24,7 +24,7 @@ export const fetchUser = createAsyncThunk(
   async () => await Auth.me()
 );
 
-export const userSlice = createSlice({
+export const currentUserSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -53,6 +53,6 @@ export const userSlice = createSlice({
 
 export const selectUser = (state: RootState) => state.user;
 
-export const { reset, setError } = userSlice.actions;
+export const { reset, setError } = currentUserSlice.actions;
 
-export default userSlice.reducer;
+export default currentUserSlice.reducer;
