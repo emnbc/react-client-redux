@@ -4,7 +4,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { style } from "typestyle";
 import { Auth } from "../services/http";
 import { LocalStore } from "../utils/local-store";
-import { fetchUser, selectUser } from "../reducers/current-user-slice";
+import { fetchCurrentUser, selectUser } from "../reducers/current-user-slice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 
@@ -25,7 +25,7 @@ export const LoginPage = () => {
 
     if (token && !userState.isLoggedIn) {
       setLoginLoading(true);
-      dispatch(fetchUser());
+      dispatch(fetchCurrentUser());
       setLoginLoading(false);
     }
   }, [dispatch, userState]);
@@ -38,7 +38,7 @@ export const LoginPage = () => {
       .then((res) => {
         if (res.data && res.data.accessToken) {
           LocalStore.setToken(res.data.accessToken);
-          dispatch(fetchUser());
+          dispatch(fetchCurrentUser());
           setLoginLoading(false);
         }
       })

@@ -1,46 +1,40 @@
 import React from "react";
-import { Users } from "../services/http";
-import { UserItem } from "../models/users";
 import { Table } from "react-bootstrap";
 import { shortDate } from "../utils/date-time";
+import { ConnectedProps, connect } from "react-redux";
+import { RootState } from "../store/store";
+import { fetchUserList, reset } from "../reducers/user-list-slice";
 
-interface UserListProps {}
+const mapState = (state: RootState) => ({
+  users: state.userList.users,
+  isLoading: state.userList.isLoading,
+});
 
-interface UserListState {
-  isLoading: boolean;
-  tableData: UserItem[];
-}
+const mapDispatch = {
+  getUsers: () => fetchUserList(),
+  reset: () => reset(),
+};
 
-export class UserListPage extends React.Component<
-  UserListProps,
-  UserListState
-> {
-  constructor(props: UserListProps) {
-    super(props);
+const connector = connect(mapState, mapDispatch);
 
-    this.state = {
-      isLoading: false,
-      tableData: [],
-    };
-  }
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+interface UserListProps extends PropsFromRedux {}
+
+interface UserListState {}
+
+class UserListPage extends React.Component<UserListProps, UserListState> {
 
   componentDidMount(): void {
-    this.loadUsers();
+    this.props.getUsers();
   }
 
-  loadUsers() {
-    this.setState({ ...this.state, isLoading: true });
-    Users.getList()
-      .then((res) => {
-        this.setState({ ...this.state, tableData: res.data, isLoading: false });
-      })
-      .catch(() => {
-        this.setState({ ...this.state, isLoading: false });
-      });
+  componentWillUnmount(): void {
+      this.props.reset();
   }
 
   render() {
-    const list = this.state.tableData.map((item, index) => (
+    const list = this.props.users.map((item, index) => (
       <tr key={item.id}>
         <td>{index + 1}</td>
         <td>{item.firstName}</td>
@@ -74,10 +68,12 @@ export class UserListPage extends React.Component<
                 <th>Email</th>
               </tr>
             </thead>
-            <tbody>{this.state.isLoading ? loading : list}</tbody>
+            <tbody>{this.props.isLoading ? loading : list}</tbody>
           </Table>
         </div>
       </div>
     );
   }
 }
+
+export default connector(UserListPage);

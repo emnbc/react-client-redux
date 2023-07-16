@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.scss";
 import { Routes, Route } from "react-router-dom";
-import { UserListPage } from "./views/UserListPage";
+import  UserListPage from "./views/UserListPage";
 import { HomePage } from "./views/HomePage";
 import { MainLayout } from "./components/layout/MainLayout";
 import { NoMatch } from "./components/utils/NaMatch";

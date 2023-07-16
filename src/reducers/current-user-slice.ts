@@ -3,29 +3,29 @@ import { Auth } from "../services/http";
 import { ICurrentUser } from "../models/auth";
 import { RootState } from "../store/store";
 
-export interface IUserState {
+export interface ICurrentUserState {
   user: ICurrentUser | null;
   isLoggedIn: boolean;
   isLoading: boolean;
   isError: boolean;
 }
 
-export const USER_FETCH = "USER_FETCH";
+export const CURRENT_USER_FETCH = "CURRENT_USER_FETCH";
 
-const initialState: IUserState = {
+const initialState: ICurrentUserState = {
   user: null,
   isLoggedIn: false,
   isLoading: false,
   isError: false,
 };
 
-export const fetchUser = createAsyncThunk(
-  USER_FETCH,
+export const fetchCurrentUser = createAsyncThunk(
+  CURRENT_USER_FETCH,
   async () => await Auth.me()
 );
 
 export const currentUserSlice = createSlice({
-  name: "user",
+  name: "current-user",
   initialState,
   reducers: {
     reset: () => initialState,
@@ -35,23 +35,23 @@ export const currentUserSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUser.pending, (state) => {
+      .addCase(fetchCurrentUser.pending, (state) => {
         state.isError = false;
         state.isLoading = true;
       })
-      .addCase(fetchUser.fulfilled, (state, action) => {
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isLoggedIn = true;
         state.user = action.payload.data;
       })
-      .addCase(fetchUser.rejected, (state) => {
+      .addCase(fetchCurrentUser.rejected, (state) => {
         state.isError = true;
         state.isLoading = false;
       });
   },
 });
 
-export const selectUser = (state: RootState) => state.user;
+export const selectUser = (state: RootState) => state.currentUser;
 
 export const { reset, setError } = currentUserSlice.actions;
 
